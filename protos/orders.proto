@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+
+import "google/protobuf/wrappers.proto";
+// import "google/protobuf/empty.proto";
+
+option go_package = "./genprotos";
+
+message CartAdder {
+    string cart_id = 1;
+}
+
+
+message Product {
+    string id = 1;
+    string name = 2;
+    google.protobuf.StringValue description = 3;
+    double price = 4;
+    int32 stock_quantity = 5;
+    string category_id = 6;
+}
+
+message CreateOrderRequest {
+    CartAdder cart_adder = 1;
+}
+
+message Response {
+    string message = 1;
+}
+
+message UpdateItemInCartRequest {
+    int32 stock_quantity = 1;
+    string product_id = 2;
+    string cart_id = 3;
+}
+
+message DeleteItemFromCartRequest {
+    string product_id = 1;
+    string cart_id = 2;
+}
+
+service OrdersService {
+    rpc CreateOrder(CreateOrderRequest) returns (Response); // load all the products in a cart and send them to collector
+    rpc AddItemIntoCart(CartAdder) returns (Response);
+    rpc UpdateItemInCart(UpdateItemInCartRequest) returns (Response);
+    rpc DeleteItemFromCart(DeleteItemFromCartRequest) returns (Response);
+}
